@@ -8,6 +8,7 @@ import New from "./pages/New";
 import Edit from "./pages/Edit";
 import Diary from "./pages/Diary";
 
+// useReducer
 const reducer = (state, action) => {
   let newState = [];
   switch (action.type) {
@@ -39,12 +40,52 @@ const reducer = (state, action) => {
   return newState;
 };
 
+// Context
 export const DiaryStateContext = React.createContext();
-
 export const DiaryDispatchContext = React.createContext();
 
+const dummyData = [
+  {
+    id: 1,
+    emotion: 1,
+    content: "오늘의 일기 1번",
+    date: 1695547823095,
+  },
+  {
+    id: 2,
+    emotion: 2,
+    content: "오늘의 일기 2번",
+    date: 1695547823096,
+  },
+  {
+    id: 3,
+    emotion: 3,
+    content: "오늘의 일기 3번",
+    date: 1695547823097,
+  },
+  {
+    id: 4,
+    emotion: 4,
+    content: "오늘의 일기 4번",
+    date: 1695547823098,
+  },
+  {
+    id: 5,
+    emotion: 5,
+    content: "오늘의 일기 5번",
+    date: 1695547823099,
+  },
+  {
+    id: 6,
+    emotion: 5,
+    content: "오늘의 일기 6번",
+    date: 1795547823099,
+  },
+];
+
+// App()
 function App() {
-  const [data, dispatch] = useReducer(reducer, []);
+  const [data, dispatch] = useReducer(reducer, dummyData);
 
   const dataId = useRef(0);
   //CREATE
@@ -76,6 +117,8 @@ function App() {
       },
     });
   };
+
+  // return
   return (
     <DiaryStateContext.Provider value={data}>
       <DiaryDispatchContext.Provider value={{ onCreate, onEdit, onRemove }}>
