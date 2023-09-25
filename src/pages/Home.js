@@ -13,6 +13,12 @@ const Home = () => {
   const [curDate, setCurDate] = useState(new Date());
   const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
 
+  // 상단 title 바꾸기
+  useEffect(() => {
+    const titleElement = document.getElementsByTagName("title")[0];
+    titleElement.innerHTML = `감정 일기장 - Home`;
+  }, []);
+
   // 날짜 범위 지정하기
   useEffect(() => {
     if (diaryList.length >= 1) {
@@ -26,7 +32,10 @@ const Home = () => {
       const lastDay = new Date(
         curDate.getFullYear(),
         curDate.getMonth() + 1,
-        0
+        0,
+        23,
+        59,
+        59
       ).getTime();
       // console.log(new Date(lastDay));
 

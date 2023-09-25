@@ -1,4 +1,4 @@
-import React, { useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 
 import "./App.css";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
@@ -37,6 +37,8 @@ const reducer = (state, action) => {
     default:
       return state;
   }
+
+  localStorage.setItem(`diary`, JSON.stringify(newState));
   return newState;
 };
 
@@ -44,48 +46,29 @@ const reducer = (state, action) => {
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
-const dummyData = [
-  {
-    id: 1,
-    emotion: 1,
-    content: "오늘의 일기 1번",
-    date: 1695547823095,
-  },
-  {
-    id: 2,
-    emotion: 2,
-    content: "오늘의 일기 2번",
-    date: 1695547823096,
-  },
-  {
-    id: 3,
-    emotion: 3,
-    content: "오늘의 일기 3번",
-    date: 1695547823097,
-  },
-  {
-    id: 4,
-    emotion: 4,
-    content: "오늘의 일기 4번",
-    date: 1695547823098,
-  },
-  {
-    id: 5,
-    emotion: 5,
-    content: "오늘의 일기 5번",
-    date: 1695547823099,
-  },
-  {
-    id: 6,
-    emotion: 5,
-    content: "오늘의 일기 6번",
-    date: 1795547823099,
-  },
-];
-
 // App()
 function App() {
-  const [data, dispatch] = useReducer(reducer, dummyData);
+  // --------- localStorate에 저장하고 불러오는 법
+  // useEffect(() => {
+  //   // localStorage.setItem("item1", 10); -> localStorage에 저장하는 방법
+  //   // const item1 = localStorage.getItem("item1"); -> LocalStorage에 지정하는 방법
+  // }, []);
+
+  const [data, dispatch] = useReducer(reducer, []);
+
+  useEffect(() => {
+    const localData = localStorage.getItem("diary");
+    if (localData) {
+      const diaryList = JSON.parse(localData).sort(
+        (a, b) => parseInt(b.id) - parseInt(a.id)
+      );
+
+      if (diaryList.length >= 1) {
+        dataId.current = parseInt(diaryList[0].id) + 1;
+        dispatch({ type: "INIT", data: diaryList });
+      }
+    }
+  }, []);
 
   const dataId = useRef(0);
   //CREATE
@@ -108,7 +91,7 @@ function App() {
   //EDIT
   const onEdit = (targetId, date, content, emotion) => {
     dispatch({
-      tpye: "EDIT",
+      type: "EDIT",
       data: {
         id: targetId,
         date: new Date(date).getTime(),
@@ -127,8 +110,9 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/new" element={<New />} />
-              <Route path="/edit" element={<Edit />} />
+              <Route path="/edit/:id" element={<Edit />} />
               <Route path="/diary/:id" element={<Diary />} />
+              {/* /:id와 같이 작성하는 것이 pathVariable 방식이다. */}
             </Routes>
           </div>
         </BrowserRouter>
