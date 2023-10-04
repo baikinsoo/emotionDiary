@@ -26,8 +26,9 @@ const Home = () => {
         curDate.getFullYear(),
         curDate.getMonth(),
         1
+        // getMonth() 다음의 1은 첫번째 날을 의미한다.
       ).getTime();
-      // console.log(new Date(firstDay));
+      console.log(new Date(firstDay));
 
       const lastDay = new Date(
         curDate.getFullYear(),
@@ -37,7 +38,8 @@ const Home = () => {
         59,
         59
       ).getTime();
-      // console.log(new Date(lastDay));
+      // getMonth() 다음의 0은 달력은 1일부터 시작하기 때문에 이전달 마지막 날을 의미한다.
+      console.log(new Date(lastDay));
 
       // 날짜 필터로 범위 지정
       setData(

@@ -20,6 +20,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
   const handleClickEmote = useCallback((emotion) => {
     setEmotion(emotion);
   }, []);
+
   const navigate = useNavigate();
 
   const handleSubmit = () => {
